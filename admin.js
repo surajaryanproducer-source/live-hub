@@ -187,10 +187,9 @@ function renderProfiles() {
 async function getInitialContent() {
   try {
     const res = await fetch('/.netlify/functions/content', { cache: 'no-store' });
-    const json = res.ok ? await res.json() : { items: [] };
-    return Array.isArray(json.items) ? json.items : [];
+    return res.ok ? await res.json() : { items: [] };
   } catch {
-    return [];
+    return { items: [] };
   }
 }
 
