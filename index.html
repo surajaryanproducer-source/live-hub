@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin</title>
-  <meta http-equiv="refresh" content="0; url=/admin.html">
-  <script>
-    try { window.location.replace('/admin.html'); } catch {}
-  </script>
+  <meta charset="UTF-8">
+  <title>Video Hub</title>
 </head>
-<body></body>
+<body>
+  <h1>Welcome to Video Hub</h1>
+  <div id="videos"></div>
+
+  <script>
+    fetch('/.netlify/functions/content')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('videos');
+        if (!data.videos || data.videos.length === 0) {
+          container.innerHTML = "<p>No video uploaded yet</p>";
+          return;
+        }
+        data.videos.forEach(video => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <h3>${video.title}</h3>
+            <video width="300" controls src="${video.url}"></video>
+          `;
+          container.appendChild(div);
+        });
+      });
+  </script>
+</body>
 </html>
